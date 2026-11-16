@@ -1,11 +1,8 @@
-﻿@model Laboratorio3.Models.Sentence
+@model Laboratorio3.Models.Sentence
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Análisis de texto";
 }
-
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p> @Model.chain .</p>
-
-    <input type="file" name="archivo" /> <input type="submit" value="Cargar" name="boton" />
+    <h1 class="display-4">Análisis de texto</h1>
+    <p>@Model.chain</p>
 </div>

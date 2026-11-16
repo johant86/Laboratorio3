@@ -1,45 +1,26 @@
+# Laboratorio3: análisis de texto
 
+Aplicación ASP.NET Core MVC recuperada para ejecutar el ejercicio sin la biblioteca externa `LibraryData`, que no estaba incluida. Su contrato consumido se implementa ahora en `Services/SentenceService.cs`; es una reconstrucción local, no el código original de esa biblioteca.
 
-<!-- local-development:start -->
-# Desarrollo local
+## Ejecutar y comprobar
 
-Puedes abrir este repositorio en VS Code, Antigravity o Sublime Text. El compilador y los servicios necesarios dependen del componente indicado abajo.
-
-## .NET SDK
-
-Instala el SDK correspondiente al destino de la tabla. .NET 8 y 9 finalizaron soporte el 2026-11-10; compilar con ellos no acredita un runtime con soporte para producción. .NET 10 requiere Visual Studio 2026 para trabajar desde ese IDE; la CLI puede usarse desde VS Code.
+Requiere .NET SDK 10.0.404 o compatible con `global.json`. En esta PC, activa primero `D:\GH\_tools\Enable-DotNet10.ps1`. Abre la carpeta en VS Code o Antigravity; Visual Studio 2022 no admite este destino net10.0.
 
 ```powershell
-dotnet --list-sdks
-dotnet build 'Laboratorio3.csproj'
+. D:\GH\_tools\Enable-DotNet10.ps1
+.\build-local.ps1
+.\build-local.ps1 -Action run
+# Abrir http://localhost:5086
 ```
 
-[.NET support policy](https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core) · [SDK / Visual Studio compatibility](https://learn.microsoft.com/en-us/dotnet/core/porting/versioning-sdk-msbuild-vs)
-
-## Componentes y validación
-
-Inventario y compilaciones locales del 2026-11-15. Una compilación correcta no acredita todavía interacción, compatibilidad de base de datos, instalador ni despliegue.
-
-| Componente | Tipo / destino | Validación |
-| --- | --- | --- |
-| [Laboratorio3.csproj](<Laboratorio3.csproj>) | dotnet / netcoreapp3.1 | Bloqueado: CS0246 |
-| [Laboratorio3.sln](<Laboratorio3.sln>) | solution | Sin ejecutar |
-
-## Archivos ignorados
-
-`.gitignore` excluye credenciales locales, estado del editor y salidas de las herramientas detectadas. No deja de versionar archivos que ya estaban en Git. Los manifiestos, archivos de bloqueo, recursos fuente y scripts de esquema forman parte del código.
-<!-- local-development:end -->
-
-<!-- verified-builds-20261115:start -->
-## Compilación comprobada
-
-- Compilación satisfactoria registrada para `Laboratorio3.csproj`.
-
-Comandos:
+Pruebas sin servicios externos:
 
 ```powershell
-msbuild "Laboratorio3.csproj" /restore /t:Build
+dotnet run --project tests/SmokeLaboratorio3/SmokeLaboratorio3.csproj
 ```
 
-La compilación no acredita todos los flujos gráficos, conexiones a bases de datos ni servicios externos. No se ejecutaron operaciones de administración contra esos servicios.
-<!-- verified-builds-20261115:end -->
+Se comprueban caracteres Unicode, índices inválidos/ausentes, búsqueda, muestra sin conexión y que el controlador conserve sus tres resultados. La página muestra carácter inicial, palabra encontrada e índice sin sobrescribir resultados ni eliminar los dígitos del índice.
+
+`LABORATORIO_URL` permite leer una página HTTP/HTTPS que elijas; sin ella se usa una muestra local. El modo externo requiere conexión y tiene límite de 10 segundos. No se ha probado contra sitios de terceros. El control de carga de archivo sin implementación fue retirado de la página.
+
+Los cambios quedan en la rama de revisión `codex/build-repairs-20261115`; no se integra la rama principal de UTN. `.gitignore` excluye bin/obj y datos locales.
